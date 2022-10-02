@@ -28,12 +28,13 @@ void Portrait::draw(void) const {
 
 //Draw the Face
 this->draw_ellipse(this->portrait_center[0], this->portrait_center[1], 0.f, 60.f, 300*this->scale, 400*this->scale, true);
-
+//rotate to the correct orientation
+glRotatef(orientation, 0.f, 0.f, 1.f);
 //Draw the Hair
 glBegin(GL_POLYGON);
-glColor3f(0.9, 0.776, 0.729);
+glColor3f(0.7, 0.776, 0.1);
 for (int i = 0; i < 40; i++) {
-    glVertex2fv()
+    //glVertex2fv()
 }
 }
 

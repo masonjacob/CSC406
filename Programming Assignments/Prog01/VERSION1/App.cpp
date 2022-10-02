@@ -49,6 +49,7 @@ void display(void) {
 	//--------------------------
 	//	basic drawing code
 	//--------------------------
+	glTranslatef(portrait_center[0], portrait_center[1], 0.f);
 	glColor3fv(currentColor);
 	glBegin(GL_POLYGON);
 	glEnd();
