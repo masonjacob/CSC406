@@ -14,8 +14,6 @@ using namespace std;
 void display(void);
 void resize_window(int w, int h);
 void on_idle(void);
-void drawSquare(float cx, float cy, float angle, float scale, float r,
-                    float g, float b, bool contour);
 
 //--------------------------------------
 //  File-level global variables
@@ -26,7 +24,7 @@ int winHeight = 800;
 float color1[]  = {1.f, 0.f, 0.f};
 float color2[]  = {0.f, 1.f, 1.f};
 float* currentColor = color1;
-float portrait_center[2] = {(float)winHeight/2, (float)winWidth/2};
+float window_center[2] = {(float)winHeight/2, (float)winWidth/2};
 
 Portrait* beautiful_portrait;
 
@@ -49,10 +47,6 @@ void display(void) {
 	//--------------------------
 	//	basic drawing code
 	//--------------------------
-	glTranslatef(portrait_center[0], portrait_center[1], 0.f);
-	glColor3fv(currentColor);
-	glBegin(GL_POLYGON);
-	glEnd();
 	beautiful_portrait->draw();
 
 	// swap buffer we drew in into the front
@@ -102,7 +96,7 @@ int main(int argc, char** argv)
 	glutInitWindowSize(winWidth, winHeight);
 	glutInitWindowPosition(INIT_WIN_X, INIT_WIN_Y);
 	glutCreateWindow("Mason's Gorgeous Portrait");
-	beautiful_portrait = new Portrait(portrait_center, .5, 0);
+	beautiful_portrait = new Portrait(window_center, 1, 0);
 
 	
 	//	set up the callbacks

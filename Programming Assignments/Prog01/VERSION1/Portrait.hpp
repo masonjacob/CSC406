@@ -36,13 +36,7 @@ class Portrait {
 		
 		void draw(void) const;
 
-        void scale_portrait(void) const;
-        
-        void rotate_portrait(void) const;
-
-		void draw_circle() const;
-
-		void draw_ellipse(int x,int y,float start_angle,float end_angle,int radius_x, int radius_y, bool fill) const;
+		void draw_ellipse(int x,int y,float rotation_angle, float start_angle,float end_angle,int radius_x, int radius_y, bool fill) const;
 
 		void draw_square() const;
 

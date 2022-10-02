@@ -2,16 +2,18 @@
 #include "glPlatform.h"
 
 
-Portrait::Portrait(float portrait_center[2], float scale, float orientation) {
+Portrait::Portrait(float portrait_center[2], float scale, float orientation) 
+    : colors{{0.9f,0.776f,0.7f, 1.f},{74.0f/255.0f, 45.f/255.f, 25.f/255.f, 1.f},{0.1f, 0.7f, 0.1f, 1.f}}
+{
     this->scale = scale;
     this->orientation = orientation;
     for (int i = 0; i < 2; i++) {
         this->portrait_center[i] = portrait_center[i];
     }
-
+    
 }
 
-Portrait::Portrait(float portrait_center[2], float sclae, float orientation, float colors[3][4]) {
+Portrait::Portrait(float portrait_center[2], float scale, float orientation, float colors[3][4]) {
     this->scale = scale;
     this->orientation = orientation;
     for (int i = 0; i < 2; i++) {
@@ -26,42 +28,52 @@ Portrait::Portrait(float portrait_center[2], float sclae, float orientation, flo
 
 void Portrait::draw(void) const {
 
-//Draw the Face
-this->draw_ellipse(this->portrait_center[0], this->portrait_center[1], 0.f, 60.f, 300*this->scale, 400*this->scale, true);
-//rotate to the correct orientation
+//Setup orgin orientation, and scaling
+// Save previous location data
+glPushMatrix();
+glTranslatef(portrait_center[0], portrait_center[1], 0.f);
 glRotatef(orientation, 0.f, 0.f, 1.f);
+glScalef(scale, scale, 0);
+
+//Draw the Face
+glColor3fv(colors[0]);
+this->draw_ellipse(0, 0, 0, 0.f, 2*M_PI, 300, 400, true);
+
+//Draw the ears
+this->draw_ellipse(-280, -50, 0, 0.f, 2*M_PI, 50, 100, true); 
+this->draw_ellipse(280, -50, 0, 0.f, 2*M_PI, 50, 100, true); 
+
 //Draw the Hair
-glBegin(GL_POLYGON);
-glColor3f(0.7, 0.776, 0.1);
-for (int i = 0; i < 40; i++) {
-    //glVertex2fv()
-}
-}
+glColor3fv(colors[1]);
+this->draw_ellipse(-300, 100, -10, 0, 2*M_PI, 50, 100, true);
+this->draw_ellipse(-100, 250, -60, 0, 2*M_PI, 150, 200, true);
 
-void Portrait::rotate_portrait(void) const {
+glPopMatrix();
 
-}
-
-void Portrait::draw_circle() const {
-
+glEnd();
+// Return to previous location/orientation
+glPopMatrix();
 }
 
-void Portrait::draw_ellipse(int x,int y,float start_angle,float end_angle,int radius_x, int radius_y, bool fill) const {
+void Portrait::draw_ellipse(int x,int y,float rotation_angle, float start_angle,float end_angle,int radius_x, int radius_y, bool fill) const {
+glPushMatrix();
+glTranslatef(x, y, 0);
+glRotatef(rotation_angle, 0.f, 0.f, 1.f);
 double angle, increment;
 if (fill) {
     glBegin(GL_POLYGON);
 } else {
     glBegin(GL_LINE_STRIP);
 }
-	glColor3f(0.9, 0.776, 0.729);
 	increment=M_PI/std::max(radius_x,radius_y)/2;
 	angle=start_angle;
 	while(angle<=end_angle)
 	{
-		glVertex2f(int((radius_x*cos(angle)+y)+.5),int((radius_y*sin(angle)+x)+.5));
+		glVertex2f(int((radius_x*cos(angle))+.5),int((radius_y*sin(angle))+.5));
 		angle=angle+increment;
 	}
-	glEnd();
+glEnd();
+glPopMatrix();
 }
 
 void Portrait::draw_square() const {
